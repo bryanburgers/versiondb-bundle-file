@@ -1,0 +1,26 @@
+{
+  "name": "versiondb-bundle-file",
+  "description": "A bundle format, using a schema file, for versiondb",
+  "author": "Bryan Burgers <bryan.burgers@gmail.com>",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/bryanburgers/versiondb-bundle-file.git"
+  },
+  "dependencies": {
+    "semver": "~1.1"
+  },
+  "devDependencies": {
+    "grunt": "~0.4",
+    "grunt-contrib-jshint": "~0.1.1",
+    "mocha": "~1.7",
+    "should": "~1.2"
+  },
+  "engines": {
+    "node": "~0.8",
+    "npm": "~1.2"
+  },
+  "scripts": {
+    "test": "node node_modules/mocha/bin/mocha"
+  }
+}
