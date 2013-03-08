@@ -30,6 +30,38 @@ describe('File Bundle', function() {
 				done();
 			});
 		});
+
+		it('throws an error for incorrect json file - not an object', function(done) {
+			bundle('test/files/array.json', function(err, bundle) {
+				should.exist(err);
+
+				done();
+			});
+		});
+
+		it('throws an error for incorrect json file - products not objects', function(done) {
+			bundle('test/files/productsNotObjects.json', function(err, bundle) {
+				should.exist(err);
+
+				done();
+			});
+		});
+
+		it('throws an error for incorrect json file - product is null', function(done) {
+			bundle('test/files/productNull.json', function(err, bundle) {
+				should.exist(err);
+
+				done();
+			});
+		});
+
+		it('throws an error for incorrect json file - invalid versions', function(done) {
+			bundle('test/files/invalidVersions.json', function(err, bundle) {
+				should.exist(err);
+
+				done();
+			});
+		});
 	});
 
 	describe('getProducts', function() {

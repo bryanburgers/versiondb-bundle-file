@@ -2,6 +2,7 @@
 
 var fs = require('fs');
 var path = require('path');
+var semver = require('semver');
 
 function FileBundle(filename) {
 	this.filename = filename;
@@ -14,16 +15,58 @@ FileBundle.prototype.open = function(callback) {
 			return callback(err);
 		}
 
+		var conf = null;
 		try {
-			var conf = JSON.parse(data);
+			conf = JSON.parse(data);
 			this.data = conf;
 		}
 		catch (jsonerr) {
 			return callback(new Error("File '" + this.filename + '" is not valid JSON:' + jsonerr.message));
 		}
 
+		try {
+			this.data = this.verifyData(conf);
+		}
+		catch (verifyerr) {
+			return callback(verifyerr);
+		}
+
 		callback(null, this);
 	}.bind(this));
+};
+FileBundle.prototype.verifyData = function(data) {
+	if (!data) {
+		throw new Error("Invalid bundle data: data must not be null");
+	}
+	if (typeof(data) !== "object") {
+		throw new Error("Invalid bundle data: data must be an object");
+	}
+
+	var count = 0;
+	Object.keys(data).forEach(function(product) {
+		if (typeof(product) !== "string") {
+			throw new Error("Invalid bundle data: data must be an object");
+		}
+		count++;
+		if (typeof(data[product]) !== "object") {
+			throw new Error("Invalid bundle data: value for product '" + product + "' must be an object");
+		}
+		if (!data[product]) {
+			throw new Error("Invalid bundle data: value for product '" + product + "' must not be null");
+		}
+
+		Object.keys(data[product]).forEach(function(version) {
+			if (!semver.valid(version)) {
+				throw new Error("Invalid bundle data: '" + version + "' in '" + product + "@" + version + "' must be a valid version");
+			}
+		});
+	});
+
+	if (count === 0) {
+		throw new Error("Invalid bundle data: no products defined");
+	}
+
+	return data;
 };
 FileBundle.prototype.getProducts = function() {
 	if (!this.data) {
