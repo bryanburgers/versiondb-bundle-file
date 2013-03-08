@@ -2,7 +2,7 @@
   "name": "versiondb-bundle-file",
   "description": "A bundle format, using a schema file, for versiondb",
   "author": "Bryan Burgers <bryan.burgers@gmail.com>",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "repository": {
     "type": "git",
     "url": "http://github.com/bryanburgers/versiondb-bundle-file.git"
